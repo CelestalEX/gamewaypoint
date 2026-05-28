@@ -63,6 +63,7 @@ The goal of the platform is to make complex games easier and more enjoyable by g
 
 GameWaypoint focuses heavily on:
 
+* creating and sharing comprehensible gaming guides,
 * editor UX,
 * scalable frontend architecture,
 * reusable component systems,
@@ -89,15 +90,7 @@ Planned future features include:
 
 ---
 
-## Development
-
-```bash
-npm install
-npm run dev
-```
-
----
-
 ## Author
 
-Developed as a personal frontend engineering project focused on modern React architecture and advanced editor systems.
+Developed as a personal frontend engineering project focused on modern React architecture and advanced editor with love for games in mind.
+
