@@ -1,8 +1,20 @@
 # GameWaypoint
 
-GameWaypoint is a modern platform designed for gamers to discover, create, and share high-quality gaming guides.
+## About The Project
 
-The goal of the platform is to make complex games easier and more enjoyable by giving players access to structured walkthroughs, tutorials, tips, and community-created content.
+GameWaypoint is a long-term personal project focused on building a modern platform for gaming guides and walkthroughs.
+
+The platform is designed to help players:
+
+* discover useful guides,
+* create rich markdown tutorials,
+* share knowledge with other gamers,
+* improve their gameplay experience.
+
+A large part of the project focuses on building a fully custom markdown editing experience inspired by tools like Obsidian and Notion.
+
+The project is currently developed as a **hobby / portfolio project and remains under active development**.
+
 
 ---
 
@@ -70,6 +82,17 @@ GameWaypoint focuses heavily on:
 * rich text editing experience,
 * responsive design,
 * performance & maintainability.
+
+---
+
+## Roadmap
+- [x] Markdown editor
+- [x] Floating toolbar
+- [x] Context menu
+- [ ] Authentication
+- [ ] Guide comments
+- [ ] User profiles
+- [ ] Search engine
 
 ---
 
