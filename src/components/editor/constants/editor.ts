@@ -1,0 +1,9 @@
+export const AUTOSAVE_DELAY = 2000
+
+export const FLOATING_TOOLBAR_OFFSET_Y = -160
+
+export const FLOATING_TOOLBAR_OFFSET_X = -160
+
+export const SLASH_MENU_OFFSET_Y = 120
+
+export const SLASH_MENU_OFFSET_X = 40

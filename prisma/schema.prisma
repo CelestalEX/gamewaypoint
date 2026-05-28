@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model Game {
+  id          Int     @id @default(autoincrement())
+  title       String
+  slug        String  @unique
+  genre       String
+  image       String
+  description String
+  guides      Guide[]
+}
+
+model Guide {
+  id        Int       @id @default(autoincrement())
+  title     String
+  slug      String    @unique
+  content   String
+  gameId    Int
+  game      Game      @relation(fields: [gameId], references: [id], onDelete:   Cascade)
+  authorID  Int
+  author    User      @relation(fields: [authorID], references: [id], onDelete:   Cascade)
+  createdAt DateTime  @default(now())
+  thumbnail String?
+  published Boolean   @default(false)
+  comments  Comment[]
+  tags      Tag[]
+}
+
+enum Role {
+  USER
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String
+  name     String
+  role     Role      @default(USER)
+  guides   Guide[]
+  comments  Comment[]
+}
+
+model Comment {
+  id      Int    @id @default(autoincrement())
+  content String
+
+  // anonim
+  authorName String?
+
+  // zalogowany user
+  author   User? @relation(fields: [authorId], references: [id], onDelete:   Cascade)
+  authorId Int?
+
+  guide   Guide @relation(fields: [guideId], references: [id], onDelete:   Cascade)
+  guideId Int
+
+  createdAt DateTime @default(now())
+}
+
+model Tag {
+  id      Int   @id @default(autoincrement())
+  name    String  @unique
+  slug    String  @unique
+  variant String? @default("neutral")
+  guides  Guide[]
+}

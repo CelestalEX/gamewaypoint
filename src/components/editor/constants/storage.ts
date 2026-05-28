@@ -1,0 +1,1 @@
+export const GUIDE_DRAFT_PREFIX = "guide-draft"
