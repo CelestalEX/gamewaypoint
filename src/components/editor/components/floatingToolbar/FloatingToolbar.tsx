@@ -47,7 +47,7 @@ type Props = {
 
   actions: ToolbarActions
 
-  blockType: string
+  toolbarLabel: string
 }
 
 
@@ -57,7 +57,7 @@ export default function FloatingToolbar({
   position,
   formatting,
   actions,
-  blockType
+  toolbarLabel
 }: Props) {
 
   if (!visible) return null
@@ -85,7 +85,7 @@ export default function FloatingToolbar({
       {/* DROPDOWN */}
     
       <ToolbarDropdown
-        label={blockType}
+        label={toolbarLabel}
         items={[
           {
             label: "Normal",
@@ -163,7 +163,7 @@ export default function FloatingToolbar({
       {/* LIST */}
 
       <ToolbarDropdown
-        label="List"
+        label=""
         icon={<List size={16} />}
         items={[
           {

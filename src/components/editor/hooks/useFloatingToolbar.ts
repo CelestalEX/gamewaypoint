@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react"
 
 import { getSelectionFormatting } from "../helpers/getSelectionFormating"
 import { getLineFormatting } from "../helpers/getLineFormatting"
+import { getBlockType } from "../helpers/getToolbarLabel"
 
 type Props = {
   textareaRef: React.RefObject<HTMLTextAreaElement | null>
@@ -38,7 +39,14 @@ export const useFloatingToolbar = ({
       end: 0
     })
 
-  const [ blockType, setBlockType ] = useState('Normal')
+  const toolbarLabel = useMemo(() => {
+
+    return getBlockType({
+      content,
+      start: selectionRange.start
+    })
+    
+  }, [content, selectionRange.start])
 
   const formatting = useMemo(() => {
 
@@ -74,6 +82,7 @@ export const useFloatingToolbar = ({
     if (!textarea) return
 
     const start = textarea.selectionStart
+
     const end = textarea.selectionEnd
 
     setSelectionRange({
@@ -114,13 +123,6 @@ export const useFloatingToolbar = ({
 
     setShowFloatingToolbar(true)
 
-    const currentBlockType =
-      getLineFormatting({
-        content,
-        start
-      })
-
-    setBlockType(currentBlockType)
   }
 
   const hideFloatingToolbar = () => {
@@ -128,7 +130,7 @@ export const useFloatingToolbar = ({
   }
 
   return {
-    blockType,
+    toolbarLabel,
 
     formatting,
 

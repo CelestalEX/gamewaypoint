@@ -163,12 +163,12 @@ export default function MarkdownEditor({
   // FLOATING TOOLBAR
 
   const {
-    blockType,
     formatting,
     showFloatingToolbar,
     floatingPosition,
     handleSelection,
-    hideFloatingToolbar
+    hideFloatingToolbar,
+    toolbarLabel
   } = useFloatingToolbar({
     textareaRef,
     content
@@ -304,7 +304,7 @@ export default function MarkdownEditor({
         position={floatingPosition}
         formatting={formatting}
         actions={floatingToolbarActions}
-        blockType={blockType}
+        toolbarLabel={toolbarLabel}
       />
 
       {/* MAIN GRID */}

@@ -1,5 +1,7 @@
 import { RefObject } from "react"
 
+import { replaceLinePrefix } from "../helpers/replaceLinePrefix"
+
 type Params = {
   textareaRef: RefObject<HTMLTextAreaElement | null>
   content: string
@@ -41,11 +43,21 @@ export const toggleLinePrefix = ({
     lines.map((line) => {
 
       if (allPrefixed) {
-        return line.replace(prefix, "")
+        return line.replace(
+          new RegExp(`^${prefix}`),
+          ""
+        )
       }
 
-      return prefix + line
-    })
+      return replaceLinePrefix({
+      text: line,
+      prefix
+      })
+
+    }
+  )
+
+
 
   const nextSelected =
     nextLines.join("\n")
