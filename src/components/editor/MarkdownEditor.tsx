@@ -38,7 +38,7 @@ import { useSlashCommands } from "./hooks/useSlashCommands"
 
 // COMPONENTS
 
-import ContextMenu from "./components/ContextMenu"
+import ContextMenu from "./components/contextMenu/ContextMenu"
 import DesktopPreview from "./components/DesktopPreview"
 import DraftRecoveryBanner from "./components/DraftRecoveryBanner"
 import EditorToolbar from "./components/EditorToolbar"
@@ -53,6 +53,7 @@ import SlashMenu from "./components/SlashMenu"
 import type { PreviewMode } from "./types/editor"
 import { toggleLinePrefix } from "./helpers/toggleLinePrefix"
 import { removeLineFormatting } from "./helpers/removeLinePrefix"
+import { useContextActions } from "./hooks"
 
 
 type Props = {
@@ -138,19 +139,16 @@ export default function MarkdownEditor({
   // CONTEXT MENU
 
   const {
-    contextMenu,
-    hasSelection,
-    handleContextMenu,
+    visible: showContextMenu,
+    position: contextMenuPosition,
+    openContextMenu,
     closeContextMenu
-  } = useContextMenu({
-    textareaRef
-  })
+  } = useContextMenu()
 
   // CONTEXT ACTIONS
 
   const contextActions =
-    createContextActions({
-      hasSelection,
+    useContextActions({
       wrapSelection: handleWrapSelection,
       insertAtCursor: handleInsertAtCursor,
       copySelection,
@@ -323,7 +321,13 @@ export default function MarkdownEditor({
             onChange={handleTextareaChange}
             onMouseUp={handleSelection}
             onKeyDown={handleKeyDown}
-            onContextMenu={handleContextMenu}    
+            onContextMenu={(e) => {
+              e.preventDefault()
+              openContextMenu(
+                e.clientX,
+                e.clientY
+              )
+            }}    
             onPaste={async (e) => {
               const items = e.clipboardData.items
 
@@ -358,11 +362,8 @@ export default function MarkdownEditor({
           />
 
           <ContextMenu 
-            visible={contextMenu.visible}
-            position={{
-              x: contextMenu.x,
-              y: contextMenu.y
-            }}
+            visible={showContextMenu}
+            position={contextMenuPosition}
             actions={contextActions}
             onClose={closeContextMenu}
           />

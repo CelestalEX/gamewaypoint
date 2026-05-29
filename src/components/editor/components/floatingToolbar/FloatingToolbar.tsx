@@ -102,18 +102,6 @@ export default function FloatingToolbar({
             label: "Heading 2",
             onClick: () =>
               actions.onHeading2?.()
-          },
-
-          {
-            label: "Warning",
-            onClick: () =>
-              actions.onWarning?.()
-          },
-
-          {   
-            label: "Code Block",
-            onClick: () =>
-              actions.onCodeBlock?.()
           }
         ]}
       />

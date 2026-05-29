@@ -66,6 +66,8 @@ export const useClipboard = ({
 
     if (!textarea) return
 
+    const scrollTop = textarea.scrollTop
+
     const text = await navigator.clipboard.readText()
 
     const start = textarea.selectionStart
@@ -82,6 +84,8 @@ export const useClipboard = ({
     requestAnimationFrame(() => {
 
       textarea.focus()
+
+      textarea.scrollTop = scrollTop
 
       const cursor =
         start + text.length

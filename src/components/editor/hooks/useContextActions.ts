@@ -1,3 +1,5 @@
+import type { ContextMenuSection } from "../types/contextMenuSection"
+
 type Props = {
 
   wrapSelection: (
@@ -28,47 +30,9 @@ export const useContextActions = ({
   pasteClipboard,
   undo,
   redo
-}: Props) => {
+}: Props): ContextMenuSection[] => {
 
   return [
-
-    {
-      section: "Formatting",
-
-      items: [
-
-        {
-          label: "Bold",
-
-          action: () =>
-            wrapSelection("**")
-        },
-
-        {
-          label: "Italic",
-
-          action: () =>
-            wrapSelection("*")
-        },
-
-        {
-          label: "Code",
-
-          action: () =>
-            wrapSelection("`")
-        },
-
-        {
-          label: "Link",
-
-          action: () =>
-            wrapSelection(
-              "[",
-              "](https://)"
-            )
-        }
-      ]
-    },
 
     {
       section: "Blocks",
@@ -78,14 +42,14 @@ export const useContextActions = ({
         {
           label: "Heading 1",
 
-          action: () =>
+          onClick: () =>
             insertAtCursor("# ")
         },
 
         {
           label: "Warning",
 
-          action: () =>
+          onClick: () =>
             insertAtCursor(
 `> [!WARNING]
 > `
@@ -102,31 +66,31 @@ export const useContextActions = ({
         {
           label: "Copy",
 
-          action: copySelection
+          onClick: copySelection
         },
 
         {
           label: "Cut",
 
-          action: cutSelection
+          onClick: cutSelection
         },
 
         {
           label: "Paste",
 
-          action: pasteClipboard
+          onClick: pasteClipboard
         },
 
         {
           label: "Undo",
 
-          action: undo
+          onClick: undo
         },
 
         {
           label: "Redo",
 
-          action: redo
+          onClick: redo
         }
       ]
     }
