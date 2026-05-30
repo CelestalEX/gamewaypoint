@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useRef, useState } from "react"
 import ContextMenuItem from "./ContextMenuItem"
 
 import type { ContextMenuSection } from "@/components/editor/types/contextMenuSection"
@@ -15,20 +16,41 @@ type Props = {
   actions: ContextMenuSection[]
 
   onClose: () => void
+
+  onMeasure?: (
+    rect: DOMRect
+  ) => void
 }
 
 export default function ContextMenu({
   visible,
   position,
   actions,
-  onClose
+  onClose,
+  onMeasure
 }: Props) {
+
+  const menuRef = useRef<HTMLDivElement>(null)
 
   if (!visible) return null
 
-return (
+  useEffect(() => {
+
+  if (
+    visible &&
+    menuRef.current
+  ) {
+    onMeasure?.(
+      menuRef.current.getBoundingClientRect()
+    )
+  }
+
+}, [visible])
+
+  return (
 
   <div
+    ref={menuRef}
     className="fixed z-50 min-w-60 rounded-2xl border border-zinc-700 bg-zinc-900/95 p-2 shadow-2xl backdrop-blur-xl"
 
     style={{

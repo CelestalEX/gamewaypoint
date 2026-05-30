@@ -1,3 +1,4 @@
+import { Editor } from "@tiptap/core"
 import type { ContextMenuSection } from "../types/contextMenuSection"
 
 type Props = {
@@ -35,30 +36,6 @@ export const useContextActions = ({
   return [
 
     {
-      section: "Blocks",
-
-      items: [
-
-        {
-          label: "Heading 1",
-
-          onClick: () =>
-            insertAtCursor("# ")
-        },
-
-        {
-          label: "Warning",
-
-          onClick: () =>
-            insertAtCursor(
-`> [!WARNING]
-> `
-            )
-        }
-      ]
-    },
-
-    {
       section: "Edit",
 
       items: [
@@ -70,15 +47,15 @@ export const useContextActions = ({
         },
 
         {
-          label: "Cut",
-
-          onClick: cutSelection
-        },
-
-        {
           label: "Paste",
 
           onClick: pasteClipboard
+        },
+
+        {
+          label: "Cut",
+
+          onClick: cutSelection
         },
 
         {
@@ -93,6 +70,115 @@ export const useContextActions = ({
           onClick: redo
         }
       ]
+    },
+
+    {
+      section: "Editor",
+
+      items: [
+        {
+          label: "Insert",
+          submenu: [
+            {
+              label: "Heading 1",
+              onClick: () =>
+                insertAtCursor("# ")
+            },
+
+            {
+              label: "Heading 2",
+              onClick: () =>
+                insertAtCursor("## ")
+            },
+
+            {
+              label: "Divider",
+              onClick: () =>
+                insertAtCursor("\n---\n")
+            },
+
+            {
+              label: "table",
+              onClick: () =>
+                insertAtCursor(
+`| Column | Column |
+|--------|--------|
+| Value  | Value  |`
+                )
+            },
+
+            {
+              label: "Callout",
+              submenu: [
+                {
+                  label: "Warning",
+                  onClick: () =>
+                    insertAtCursor(
+`> [!WARNING]
+> `                      
+                    )
+                },
+
+                {
+                  label: "Tip",
+                  onClick: () =>
+                    insertAtCursor(
+`> [!TIP]
+> `
+                    )
+                },
+
+                {
+                  label: "Spoiler",
+                  onClick: () => 
+                    insertAtCursor(
+`> [!SPOILER]
+> `
+                    )
+                }
+              ]
+            }
+          ]
+        },
+
+        {
+          label: "Formatting",
+          submenu: [
+            {
+              label: "Bold",
+              shortcut: "Ctrl+B",
+              onClick: () =>
+                wrapSelection("**")
+            },
+
+            {
+              label: "Italic",
+              shortcut: "Ctrl+I",
+              onClick: () =>
+                wrapSelection("*")
+            },
+
+            {
+              label: "Code",
+              shortcut: "Ctrl+E",
+              onClick: () =>
+                wrapSelection("`")
+            },
+
+            {
+              label: "Link",
+              shortcut: "Ctrl+K",
+              onClick: () =>
+                wrapSelection(
+                  "[",
+                  "](https://)"
+                )
+            }
+          ]
+        }
+      ]
     }
+
+    
   ]
 }

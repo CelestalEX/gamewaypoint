@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { getSafeMenuPosition } from "../helpers/getSafeMenuPosition"
 
 export const useContextMenu = () => {
 
@@ -13,15 +14,54 @@ export const useContextMenu = () => {
       y: 0
     })
 
+    const adjustPosition = (
+      rect: DOMRect
+    ) => {
+
+      const PADDING = 12
+
+      let x = position.x
+      let y = position.y
+
+      if (
+        rect.right >
+        window.innerWidth - PADDING
+      ) {
+        x -=
+          rect.right -
+          (
+            window.innerWidth -
+            PADDING
+          )
+      }
+
+      if (
+        rect.bottom >
+        window.innerHeight - PADDING
+      ) {
+        y -=
+          rect.bottom -
+          (
+            window.innerHeight -
+            PADDING
+          )
+      }
+
+      setPosition({
+        x,
+        y
+      })
+    }
+
   // OPEN
   const openContextMenu = (
-    x: number,
-    y: number
+    clientX: number,
+    clientY: number
   ) => {
-    
+
     setPosition({
-      x,
-      y
+      x: clientX,
+      y: clientY
     })
     
     setVisible(true)
@@ -53,6 +93,7 @@ export const useContextMenu = () => {
     visible,
     position,
     openContextMenu,
-    closeContextMenu
+    closeContextMenu,
+    adjustPosition
   }
 }

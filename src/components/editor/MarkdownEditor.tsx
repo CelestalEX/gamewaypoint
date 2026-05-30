@@ -142,7 +142,8 @@ export default function MarkdownEditor({
     visible: showContextMenu,
     position: contextMenuPosition,
     openContextMenu,
-    closeContextMenu
+    closeContextMenu,
+    adjustPosition
   } = useContextMenu()
 
   // CONTEXT ACTIONS
@@ -366,6 +367,7 @@ export default function MarkdownEditor({
             position={contextMenuPosition}
             actions={contextActions}
             onClose={closeContextMenu}
+            onMeasure={adjustPosition}
           />
 
 

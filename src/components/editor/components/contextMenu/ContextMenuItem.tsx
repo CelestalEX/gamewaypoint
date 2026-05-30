@@ -1,8 +1,10 @@
 "use client"
-
+import { useEffect, useState, useRef } from "react"
 import { ChevronRight } from "lucide-react"
 
 import type { ContextMenuItem as ContextMenuItemType } from "@/components/editor/types/contextMenuItem"
+
+import { getSafeSubmenuSide } from "../../helpers/getSafeSubmenuSide"
 
 type Props = {
   item: ContextMenuItemType
@@ -13,6 +15,8 @@ export default function ContextMenuItem({
   item,
   onClose
 }: Props) {
+
+  const [showSubmenu, setShowSubmenu] = useState<boolean>(false)
 
   const handleClick = () => {
 
@@ -26,8 +30,49 @@ export default function ContextMenuItem({
     onClose()
   }
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  const itemRef = useRef<HTMLDivElement>(null)
+
+  const [submenuSide, setSubmenuSide] =
+    useState<"left" | "right">("right")
+
+  useEffect(() => {
+
+    if(
+      !showSubmenu ||
+      !itemRef.current
+    ){
+      return
+    }
+
+    const rect = itemRef.current.getBoundingClientRect()
+
+    setSubmenuSide(
+      getSafeSubmenuSide({
+        triggerRect: rect,
+        submenuWidth: 240
+      })
+    )
+
+    
+
+  }, [showSubmenu])
+
   return (
 
+
+    <div
+      ref={itemRef}
+      className="relative"
+      onMouseEnter={() => 
+        setShowSubmenu(true)
+      }
+
+      onMouseLeave={() =>
+        setShowSubmenu(false)
+      }
+    >
 
     <button
       type="button"
@@ -97,7 +142,33 @@ export default function ContextMenuItem({
 
     </div>
 
-</button>
+  </button>
+
+  {/* SUBMENU FOR INSERT */}
+      {
+        item.submenu &&
+        showSubmenu && (
+          <div className={`absolute top-0 min-w-55 rounded-xl border border-zinc-700 bg-zinc-900 p-1 shadow-2xl
+            ${
+              submenuSide === "right"
+                ? "left-full"
+                : "right-full" 
+            }
+          `}>
+            {item.submenu.map(
+              (subItem) => (
+                <ContextMenuItem 
+                  key={subItem.label}
+                  item={subItem}
+                  onClose={onClose}
+                />
+              )
+            )}
+          </div>
+        )
+      }
+      
+  </div>
 
 
 )
