@@ -2,7 +2,7 @@
 
 // REACT
 
-import { useRef, useState } from "react"
+import { useRef, useEffect, useState } from "react"
 
 // PREVIEW
 
@@ -273,6 +273,35 @@ export default function MarkdownEditor({
     handleSlashCommand(value)
   }
 
+  useEffect(() => {
+
+  const handlePageShow = (
+    event: PageTransitionEvent
+  ) => {
+
+    console.log(
+      "pageshow",
+      event.persisted
+    )
+
+  }
+
+  window.addEventListener(
+    "pageshow",
+    handlePageShow
+  )
+
+  return () => {
+
+    window.removeEventListener(
+      "pageshow",
+      handlePageShow
+    )
+
+  }
+
+}, [])
+
 
   return (
 
@@ -323,6 +352,7 @@ export default function MarkdownEditor({
             onMouseUp={handleSelection}
             onKeyDown={handleKeyDown}
             onContextMenu={(e) => {
+              console.log("context menu")
               e.preventDefault()
               openContextMenu(
                 e.clientX,
@@ -351,7 +381,13 @@ export default function MarkdownEditor({
             }}
             onDragOver={(e) => {
               e.preventDefault()
-            }}          
+            }}    
+            onFocus={() =>
+              console.log("focus")
+            }      
+            onBlur={() =>
+              console.log("blur")
+            }
           />
 
           <SlashMenu 

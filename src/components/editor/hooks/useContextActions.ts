@@ -1,5 +1,5 @@
-import { Editor } from "@tiptap/core"
 import type { ContextMenuSection } from "../types/contextMenuSection"
+import { Bold, Italic, Code2, Link2, Copy, Clipboard, Scissors, Undo2, Redo2, Heading1, Heading2, Redo} from "lucide-react"
 
 type Props = {
 
@@ -42,31 +42,31 @@ export const useContextActions = ({
 
         {
           label: "Copy",
-
+          icon: Copy,
           onClick: copySelection
         },
 
         {
           label: "Paste",
-
+          icon: Clipboard,
           onClick: pasteClipboard
         },
 
         {
           label: "Cut",
-
+          icon: Scissors,
           onClick: cutSelection
         },
 
         {
           label: "Undo",
-
+          icon: Undo2,
           onClick: undo
         },
 
         {
           label: "Redo",
-
+          icon: Redo2,
           onClick: redo
         }
       ]
@@ -81,12 +81,14 @@ export const useContextActions = ({
           submenu: [
             {
               label: "Heading 1",
+              icon: Heading1,
               onClick: () =>
                 insertAtCursor("# ")
             },
 
             {
               label: "Heading 2",
+              icon: Heading2,
               onClick: () =>
                 insertAtCursor("## ")
             },
@@ -98,7 +100,7 @@ export const useContextActions = ({
             },
 
             {
-              label: "table",
+              label: "Table",
               onClick: () =>
                 insertAtCursor(
 `| Column | Column |
@@ -146,32 +148,35 @@ export const useContextActions = ({
           submenu: [
             {
               label: "Bold",
+              icon: Bold,
               shortcut: "Ctrl+B",
               onClick: () =>
-                wrapSelection("**")
+                insertAtCursor("**Text**")
             },
 
             {
               label: "Italic",
+              icon: Italic,
               shortcut: "Ctrl+I",
               onClick: () =>
-                wrapSelection("*")
+                insertAtCursor("*Text*")
             },
 
             {
               label: "Code",
+              icon: Code2,
               shortcut: "Ctrl+E",
               onClick: () =>
-                wrapSelection("`")
+                insertAtCursor("`Text`")
             },
 
             {
               label: "Link",
+              icon: Link2,
               shortcut: "Ctrl+K",
               onClick: () =>
-                wrapSelection(
-                  "[",
-                  "](https://)"
+                insertAtCursor(
+                  "[Text](https://)"
                 )
             }
           ]

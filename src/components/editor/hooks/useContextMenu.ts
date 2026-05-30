@@ -20,14 +20,14 @@ export const useContextMenu = () => {
 
       const PADDING = 12
 
-      let x = position.x
-      let y = position.y
+      let nextX = position.x
+      let nextY = position.y
 
       if (
         rect.right >
         window.innerWidth - PADDING
       ) {
-        x -=
+        nextX -=
           rect.right -
           (
             window.innerWidth -
@@ -39,7 +39,7 @@ export const useContextMenu = () => {
         rect.bottom >
         window.innerHeight - PADDING
       ) {
-        y -=
+        nextY -=
           rect.bottom -
           (
             window.innerHeight -
@@ -47,10 +47,15 @@ export const useContextMenu = () => {
           )
       }
 
-      setPosition({
-        x,
-        y
+      if (
+        nextX !== position.x ||
+        nextY !== position.y 
+      ){
+        setPosition({
+          x: nextX,
+          y: nextY
       })
+      }
     }
 
   // OPEN
@@ -88,6 +93,29 @@ export const useContextMenu = () => {
       )
 
   }, [])
+
+  // AFTER LINK
+  useEffect(() => {
+    const handleFocus = () => {
+      closeContextMenu()
+
+    }
+
+    window.addEventListener(
+      "focus",
+      handleFocus
+    )
+
+    return () => {
+
+      window.removeEventListener(
+        "focus",
+        handleFocus
+      )
+
+  }
+
+}, [])
 
   return {
     visible,

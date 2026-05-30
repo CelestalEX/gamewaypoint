@@ -1,8 +1,9 @@
 import { ReactNode } from "react"
+import { LucideIcon } from "lucide-react"
 
 export type ContextMenuItem = {
   label: string
-  icon?: ReactNode
+  icon?: LucideIcon
   shortcut?: string
 
   danger?: boolean

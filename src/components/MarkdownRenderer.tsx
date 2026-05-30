@@ -26,6 +26,20 @@ export default function MarkdownRenderer({
 
   const components: Components = {
 
+    // a({ href, children}) {
+    //   return (
+    //     <a
+    //       href={href}
+    //       onClick={(e) => {
+    //         e.preventDefault()
+    //       }}
+    //       className="text-blue-400 underline"
+    //     >
+    //       {children}
+    //     </a>
+    //   )
+    // },
+
     p ({children}){
       const childArray = React.Children.toArray(children)
       const hasImage = 

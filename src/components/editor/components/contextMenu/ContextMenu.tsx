@@ -32,20 +32,27 @@ export default function ContextMenu({
 
   const menuRef = useRef<HTMLDivElement>(null)
 
-  if (!visible) return null
+  const submenuRef = useRef<HTMLDivElement>(null)
+
+  const [submenuSide, setSubmenuSide] =
+    useState<"left" | "right">("right")
+  
+  const [submenuTop, setSubmenuTop] = useState(0)
 
   useEffect(() => {
 
-  if (
-    visible &&
-    menuRef.current
-  ) {
-    onMeasure?.(
-      menuRef.current.getBoundingClientRect()
-    )
-  }
+    if (
+      visible &&
+      menuRef.current
+    ) {
+      onMeasure?.(
+        menuRef.current.getBoundingClientRect()
+      )
+    }
 
-}, [visible])
+  }, [visible])
+
+  if (!visible) return null
 
   return (
 

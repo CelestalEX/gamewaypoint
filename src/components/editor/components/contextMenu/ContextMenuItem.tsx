@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react"
 
 import type { ContextMenuItem as ContextMenuItemType } from "@/components/editor/types/contextMenuItem"
 
-import { getSafeSubmenuSide } from "../../helpers/getSafeSubmenuSide"
+import { getSafeSubmenuPosition } from "../../helpers/getSafeSubmenuPosition"
 
 type Props = {
   item: ContextMenuItemType
@@ -16,7 +16,24 @@ export default function ContextMenuItem({
   onClose
 }: Props) {
 
+  if (item.separator) {
+    return (
+      <div className="my-1 border-t border-zinc-800" />
+    )
+  }
+
+  const ItemIcon = item.icon
+
   const [showSubmenu, setShowSubmenu] = useState<boolean>(false)
+
+  const itemRef = useRef<HTMLDivElement>(null)
+
+  const submenuRef = useRef<HTMLDivElement>(null)
+
+  const [submenuSide, setSubmenuSide] =
+    useState<"left" | "right">("right")
+  
+  const [submenuTop, setSubmenuTop] = useState(0)
 
   const handleClick = () => {
 
@@ -30,34 +47,33 @@ export default function ContextMenuItem({
     onClose()
   }
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  const itemRef = useRef<HTMLDivElement>(null)
-
-  const [submenuSide, setSubmenuSide] =
-    useState<"left" | "right">("right")
-
   useEffect(() => {
 
     if(
       !showSubmenu ||
-      !itemRef.current
+      !itemRef.current ||
+      !submenuRef.current
     ){
       return
     }
 
-    const rect = itemRef.current.getBoundingClientRect()
+    const result =
+      getSafeSubmenuPosition({
+        triggerRect: itemRef.current.getBoundingClientRect(),
+        submenuWidth: submenuRef.current.offsetWidth,
+        submenuHeight: submenuRef.current.offsetHeight
+      })
 
     setSubmenuSide(
-      getSafeSubmenuSide({
-        triggerRect: rect,
-        submenuWidth: 240
-      })
+      result.side
     )
 
-    
+    setSubmenuTop(
+      result.top
+    )
 
   }, [showSubmenu])
+
 
   return (
 
@@ -102,13 +118,14 @@ export default function ContextMenuItem({
        `}
     >
 
-    {/* LEFT */}
+    {/* LEFT NAME + ICON */}
 
     <div className="flex items-center gap-2">
 
-      {item.icon && (
-        <span className="text-zinc-400">
-          {item.icon}
+      {ItemIcon && (
+        
+        <span className="flex h-4 w-4 items-center justify-center text-zinc-400">
+          <ItemIcon size={16} />
         </span>
       )}
 
@@ -118,7 +135,7 @@ export default function ContextMenuItem({
 
     </div>
 
-    {/* RIGHT */}
+    {/* RIGHT SHORTCUT */}
 
     <div className="flex items-center gap-3">
 
@@ -148,13 +165,19 @@ export default function ContextMenuItem({
       {
         item.submenu &&
         showSubmenu && (
-          <div className={`absolute top-0 min-w-55 rounded-xl border border-zinc-700 bg-zinc-900 p-1 shadow-2xl
+          <div 
+            ref={submenuRef}
+            className={`absolute min-w-55 rounded-xl border border-zinc-700 bg-zinc-900 p-1 shadow-2xl
             ${
               submenuSide === "right"
                 ? "left-full"
                 : "right-full" 
             }
-          `}>
+          `}
+            style={{
+              top: submenuTop
+            }}
+          >
             {item.submenu.map(
               (subItem) => (
                 <ContextMenuItem 
