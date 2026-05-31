@@ -104,6 +104,9 @@ export default function MarkdownEditor({
     beforeSyntax: string,
     afterSyntax?: string
   ) => {
+
+    console.log("handleWrapSelection")
+
     wrapSelection({
       textareaRef,
       content,
@@ -196,7 +199,7 @@ export default function MarkdownEditor({
     })
   }
 
-  const floatingToolbarActions =
+  const editorActions =
     useFloatingToolbarActions({
       handleWrapSelection,
       handleInsertAtCursor,
@@ -234,9 +237,10 @@ export default function MarkdownEditor({
       showSlashMenu,
       filteredCommands,
       selectedCommand,
+      editorActions: editorActions,
       setSelectedCommand,
       insertSlashCommand,
-      closeSlashMenu: () => setShowSlashMenu(false) 
+      closeSlashMenu: () => setShowSlashMenu(false)
     })
 
   // IMAGE UPLOAD
@@ -275,32 +279,27 @@ export default function MarkdownEditor({
 
   useEffect(() => {
 
-  const handlePageShow = (
-    event: PageTransitionEvent
-  ) => {
+    const handleFocus = () => {
 
-    console.log(
-      "pageshow",
-      event.persisted
+      closeContextMenu()
+
+    }
+
+    window.addEventListener(
+      "focus",
+      handleFocus
     )
 
-  }
+    return () => {
 
-  window.addEventListener(
-    "pageshow",
-    handlePageShow
-  )
+      window.removeEventListener(
+        "focus",
+        handleFocus
+      )
 
-  return () => {
+    }
 
-    window.removeEventListener(
-      "pageshow",
-      handlePageShow
-    )
-
-  }
-
-}, [])
+  }, [])
 
 
   return (
@@ -331,7 +330,7 @@ export default function MarkdownEditor({
         visible={showFloatingToolbar}
         position={floatingPosition}
         formatting={formatting}
-        actions={floatingToolbarActions}
+        actions={editorActions}
         toolbarLabel={toolbarLabel}
       />
 

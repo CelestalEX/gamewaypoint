@@ -1,4 +1,4 @@
-import React, { Children } from "react"
+import React from "react"
 
 import ReactMarkdown from "react-markdown"
 
@@ -26,19 +26,20 @@ export default function MarkdownRenderer({
 
   const components: Components = {
 
-    // a({ href, children}) {
-    //   return (
-    //     <a
-    //       href={href}
-    //       onClick={(e) => {
-    //         e.preventDefault()
-    //       }}
-    //       className="text-blue-400 underline"
-    //     >
-    //       {children}
-    //     </a>
-    //   )
-    // },
+    a ({ href, children}) {
+      
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 text-blue-400 underline"
+        >
+          {children}
+        </a>
+      )
+
+    },
 
     p ({children}){
       const childArray = React.Children.toArray(children)

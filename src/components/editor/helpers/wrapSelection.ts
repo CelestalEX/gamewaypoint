@@ -66,6 +66,7 @@ export const wrapSelection = ({
     result +
     content.slice(end)
 
+  console.log("wrapSelection updateContent")
   updateContent(newContent)
 
   requestAnimationFrame(() => {

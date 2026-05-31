@@ -1,4 +1,5 @@
 import { KeyboardEvent } from "react"
+import type { EditorActions } from "../types/editorActions"
 
 type Command = {
   label: string
@@ -25,6 +26,9 @@ type Props = {
   ) => void
 
   closeSlashMenu: () => void
+
+  editorActions: EditorActions
+
 }
 
 export const useEditorShortcuts = ({
@@ -35,16 +39,79 @@ export const useEditorShortcuts = ({
   selectedCommand,
   setSelectedCommand,
   insertSlashCommand,
-  closeSlashMenu
+  closeSlashMenu,
+  editorActions
 }: Props) => {
   const handleKeyDown = (
     e: KeyboardEvent<HTMLTextAreaElement>
   ) => {
+
+    const ctrl = e.ctrlKey || e.metaKey
+
+    if (!ctrl) return
+
+    
+    // FORMATTING SHORTCUTS
+    switch (e.key.toLowerCase()) {
+      case "b":
+        console.log("shortcut bold")
+        e.preventDefault()
+        editorActions.onBold()
+        break
+      
+      case "i":
+        e.preventDefault()
+        editorActions.onItalic()
+        break
+
+      case "k":
+        e.preventDefault()
+        editorActions.onLink()
+        break
+
+      case "e":
+        e.preventDefault()
+        editorActions.onCode()
+        break
+    }
+
+    // CTRL + SHIFT SHORTCUTS
+    if( ctrl && e.shiftKey) {
+
+      switch (e.key){
+        case "1": 
+          e.preventDefault()
+          editorActions.onHeading1()
+          break
+
+        case "2":
+          e.preventDefault()
+          editorActions.onHeading2()
+          break
+
+        case "7":
+          e.preventDefault()
+          editorActions.onNumberedList()
+          break
+
+        case "8":
+          e.preventDefault()
+          editorActions.onBulletList()
+          break
+
+        case "W":
+        case "w":
+          e.preventDefault()
+          editorActions.onWarning()
+          break
+      }
+    }
     
     // REDO
     if(
-      (e.ctrlKey || e.metaKey) &&
-      e.key === "y"
+      ctrl &&
+      e.shiftKey &&
+      e.key.toLowerCase() === "y"
     ){
       e.preventDefault()
       redo()
@@ -53,8 +120,9 @@ export const useEditorShortcuts = ({
 
     // UNDO
     if(
-      (e.ctrlKey || e.metaKey) &&
-      e.key === "z"
+      ctrl &&
+      e.shiftKey &&
+      e.key.toLowerCase() === "z"
     ){
       e.preventDefault()
       undo()
@@ -70,7 +138,7 @@ export const useEditorShortcuts = ({
     }
 
 
-    // DOWN
+    // DOWN FOR SLASH MENU
     if (e.key === "ArrowDown"){
       e.preventDefault()
 
@@ -84,7 +152,7 @@ export const useEditorShortcuts = ({
       return
     }
 
-    // UP
+    // UP FOR SLASH MENU
     if (e.key === "ArrowUp"){
       e.preventDefault()
 
@@ -95,7 +163,7 @@ export const useEditorShortcuts = ({
       return
     }
 
-    // ENTER
+    // ENTER FOR SLASH MENU
     if (e.key === "Enter"){
       e.preventDefault()
 
@@ -108,7 +176,7 @@ export const useEditorShortcuts = ({
       return
     }
 
-    // ESCAPE 
+    // ESCAPE FOR SLASH MENU
     if (e.key === "Escape"){
       closeSlashMenu()
 

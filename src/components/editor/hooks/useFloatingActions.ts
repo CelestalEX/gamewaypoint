@@ -32,9 +32,10 @@ export const useFloatingToolbarActions = ({
   return {
 
     onBold: () =>
-      runAndRefresh(() =>
+      runAndRefresh(() => {
+        console.log("Onbold")
         handleWrapSelection("**")
-    ),
+  }),
 
     onItalic: () =>
       runAndRefresh(() => 

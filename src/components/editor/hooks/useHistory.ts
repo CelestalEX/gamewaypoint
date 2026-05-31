@@ -21,6 +21,8 @@ export const useHistory = ({
 
     onChange(value)
 
+    console.log("history push", value)
+
     const newHistory =
       history.slice(
         0,
@@ -34,8 +36,15 @@ export const useHistory = ({
       )
       setSaveStatus("unsaved")
   }
+
   // UNDO
   const undo = () => {
+
+    console.log(
+      "undo",
+      history[historyIndex - 1]
+    )
+
     if (historyIndex <= 0) return
 
     const previousIndex = historyIndex - 1
